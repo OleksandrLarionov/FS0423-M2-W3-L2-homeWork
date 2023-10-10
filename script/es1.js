@@ -5,7 +5,6 @@ const myForm = document.getElementById('myForm');
 const topName = document.getElementById('top');
 
 const localStorageKey = 'saved-name';
-const sessionStorageKey = 'session';
 const save = () => {
 	const saveValue = inputName.value;
 	localStorage.setItem(localStorageKey, saveValue);
@@ -18,6 +17,7 @@ const remove = () => {
 	if (sometshingSaved) {
 		localStorage.removeItem(localStorageKey);
 		topName.innerHTML = '';
+		s = 0;
 	} else {
 		alert('Empty');
 	}
@@ -63,27 +63,36 @@ displayName();
 // With Cronometer
 const tempo = document.getElementById('counter');
 const myP = document.createElement('p');
+myP.classList.add('fw-bold');
+myP.classList.add('mb-0');
 tempo.appendChild(myP);
+
+const sessionStorageKey = 'session';
 let m = 0;
 let s = 0;
 let mm = 0;
 
+if (sessionStorage.getItem(sessionStorageKey)) {
+	s = parseInt(sessionStorage.getItem(sessionStorageKey));
+}
 const startTime = () => {
-	mm++;
-	if (mm === 1000) {
-		s++;
-		mm = 0;
-	}
+	const interval = setInterval(() => {
+		mm++;
+		if (mm === 100) {
+			s++;
+			mm = 0;
+		}
 
-	if (s === 60) {
-		m++;
-		s = 0;
-	}
-	const timer = `${m} min ${s} seconds ${mm} milliseconds`;
-	sessionStorage.setItem(sessionStorageKey, timer);
-	const downTime2 = sessionStorage.getItem(sessionStorageKey);
-	myP.innerHTML = `${downTime2}`;
+		if (s === 600) {
+			m++;
+			s = 0;
+		}
+		let timer = `${s} seconds`;
+		sessionStorage.setItem(sessionStorageKey, timer);
+		const downTime2 = sessionStorage.getItem(sessionStorageKey);
+		myP.innerHTML = `${downTime2}`;
+	}, 10);
 };
 
-setInterval(startTime, 10);
+startTime();
 // startTime();
