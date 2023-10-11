@@ -4,6 +4,12 @@ const resetBtn = document.getElementById('reset');
 const myForm = document.getElementById('myForm');
 const topName = document.getElementById('top');
 
+const tempo = document.getElementById('counter');
+const myP = document.createElement('p');
+myP.classList.add('fw-bold');
+myP.classList.add('mb-0');
+tempo.appendChild(myP);
+
 const localStorageKey = 'saved-name';
 const save = () => {
 	const saveValue = inputName.value;
@@ -34,38 +40,8 @@ const displayName = () => {
 };
 
 displayName();
-// With current time
-// const tempo = document.getElementById('counter');
-// const myP = document.createElement('p');
-// tempo.appendChild(myP);
-
-// // tempo
-// const myCounter = () => {
-// 	let startTime = new Date();
-// 	let h = '';
-// 	let m = '';
-// 	let s = '';
-// 	// let mm = '';
-
-// 	h = startTime.getHours() + ':';
-// 	m = startTime.getMinutes() + ':';
-// 	s = (startTime.getSeconds() / 1000) % 100;
-// 	const time = ` ${s}`;
-// 	// mm = startTime.getMilliseconds() + ':';
-
-// 	sessionStorage.setItem(sessionStorageKey, time);
-// 	const downTime = sessionStorage.getItem(sessionStorageKey);
-// 	myP.innerHTML = `${downTime}`;
-// };
-
-// setInterval(myCounter, 1000);
 
 // With Cronometer
-const tempo = document.getElementById('counter');
-const myP = document.createElement('p');
-myP.classList.add('fw-bold');
-myP.classList.add('mb-0');
-tempo.appendChild(myP);
 
 const sessionStorageKey = 'session';
 let m = 0;
@@ -73,7 +49,11 @@ let s = 0;
 let mm = 0;
 
 if (sessionStorage.getItem(sessionStorageKey)) {
-	s = parseInt(sessionStorage.getItem(sessionStorageKey));
+	const timerValue = sessionStorage.getItem(sessionStorageKey).split(':');
+	console.log(timerValue);
+	m = parseInt(timerValue[0]);
+	s = parseInt(timerValue[1]);
+	mm = parseInt(timerValue[2]);
 }
 const startTime = () => {
 	const interval = setInterval(() => {
@@ -83,11 +63,11 @@ const startTime = () => {
 			mm = 0;
 		}
 
-		if (s === 600) {
+		if (s === 60) {
 			m++;
 			s = 0;
 		}
-		let timer = `${s} seconds`;
+		let timer = `${m}:${s}:${mm}`;
 		sessionStorage.setItem(sessionStorageKey, timer);
 		const downTime2 = sessionStorage.getItem(sessionStorageKey);
 		myP.innerHTML = `${downTime2}`;
@@ -95,4 +75,3 @@ const startTime = () => {
 };
 
 startTime();
-// startTime();
